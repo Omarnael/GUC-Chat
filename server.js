@@ -40,3 +40,37 @@ app.post('/users', (req, res) => {
       }
     })
 })
+
+app.post('/authenticate', (req, res) => {
+  const authData = chatkit.authenticate({ userId: req.query.user_id })
+  res.status(authData.status).send(authData.body)
+})
+
+app.get('/get_users',async (req,res) => {
+  const userData = await users.find();
+  return res.json({data:userData});
+})
+
+app.get('/add_user/:email/:password',async(req,res) => {
+  const { email, password} = req.params;
+  const newUser = await users.create({email,password});
+  return res.json({data:newUser});
+})
+
+app.get('/login/:email/:password',async(req,res)=>{
+  const {email,password} = req.params;
+  const user = await users.findOne({email,password});
+  if(user){
+    return res.json({data:"Logged IN"});
+  }
+  return res.status(400).send({error:"Wrong email or password"});
+})
+
+const PORT = 3001
+app.listen(PORT, err => {
+  if (err) {
+    console.error(err)
+  } else {
+    console.log(`Running on port ${PORT}`)
+  }
+})
