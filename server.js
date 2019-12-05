@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const Chatkit = require('@pusher/chatkit-server')
 const mongoose = require('mongoose');
-const db = "mongodb+srv://streakfull:7aramy%402013@overflow-i0iu7.mongodb.net/test?retryWrites=true";
+const db = process.env.gucdb;
 const users = require('./user.model.js');
 
 const dbConfig = { useNewUrlParser: true, useFindAndModify: false };
@@ -16,8 +17,8 @@ mongoose
 const app = express()
 
 const chatkit = new Chatkit.default({
-  instanceLocator: 'v1:us1:e9c1070a-2c59-44ea-bc16-68c1365db3e4',
-  key: '206dd388-59e4-42ba-909f-655755a5b7ff:i4De+Camp+LETNaIrec6vAnrbShc5MDEtblqKxGE3qI=',
+  instanceLocator: process.env.il,
+  key: process.env.APIkey,
 })
 
 app.use(bodyParser.urlencoded({ extended: false }))
